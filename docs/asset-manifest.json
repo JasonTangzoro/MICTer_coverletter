@@ -1,0 +1,418 @@
+{
+  "date": "2026-11-13",
+  "manuscript": "../Manuscript_MICTer.docx",
+  "supplement": "../Supplemental_Material_MICTer.docx",
+  "available_figures": [
+    "Figure 2",
+    "Figure 3",
+    "Figure 4",
+    "Figure 5",
+    "Figure 6",
+    "Figure S3",
+    "Figure S4",
+    "Figure S5",
+    "Figure S6",
+    "Figure S7",
+    "Figure S8",
+    "Figure S9",
+    "Figure S10",
+    "Figure S11"
+  ],
+  "assets": [
+    {
+      "figure": "Figure 2",
+      "source": "../MICTer图/exports_20261113/png/figure2.png",
+      "source_sha256": "8e9e966dbe8302e35819dfb9a45adf21a0e45b8a40f242d3d447d771e1e03c02",
+      "preview": "assets/figures/figure2.webp",
+      "pdf": "assets/pdfs/figure2.pdf"
+    },
+    {
+      "figure": "Figure 3",
+      "source": "../MICTer图/exports_20261113/png/figure3.png",
+      "source_sha256": "f6d8d96fa99dc585a56a949f28989b00d1b1704bf754f798115650512f1bfba2",
+      "preview": "assets/figures/figure3.webp",
+      "pdf": "assets/pdfs/figure3.pdf"
+    },
+    {
+      "figure": "Figure 4",
+      "source": "../MICTer图/exports_20261113/png/figure4.png",
+      "source_sha256": "51e3ad314b30448a4ecc5d9a175f14ddecdf901af771f909f865cdae17c4cfd8",
+      "preview": "assets/figures/figure4.webp",
+      "pdf": "assets/pdfs/figure4.pdf"
+    },
+    {
+      "figure": "Figure 5",
+      "source": "../MICTer图/exports_20261113/png/figure5.png",
+      "source_sha256": "15c17cb46df529d3f2be7f4c7796864bc6319dcc212f76a78d5ac6da9ab06967",
+      "preview": "assets/figures/figure5.webp",
+      "pdf": "assets/pdfs/figure5.pdf"
+    },
+    {
+      "figure": "Figure 6",
+      "source": "../MICTer图/exports_20261113/png/figure6.png",
+      "source_sha256": "6f6a1d0b8c6dce3f48ece7f0c2d69543f003e01d209bdf1cfe052c59bc6a91fd",
+      "preview": "assets/figures/figure6.webp",
+      "pdf": "assets/pdfs/figure6.pdf"
+    },
+    {
+      "figure": "Figure S3",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image1.png",
+      "source_sha256": "39050172061638b49542dcb6134feb596bd4c018bcfbab0dfa86684d056f4d6f",
+      "preview": "assets/figures/figureS3.webp"
+    },
+    {
+      "figure": "Figure S4",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image2.png",
+      "source_sha256": "1ca9d3e3463539b4ba90c1a669e1ad4587edc9e4d133992e6ebd92a86d4b9a13",
+      "preview": "assets/figures/figureS4.webp"
+    },
+    {
+      "figure": "Figure S5",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image3.png",
+      "source_sha256": "d363a075c8f01323213594ea09b84b5a791a89119310f62438cd3997d7de0b47",
+      "preview": "assets/figures/figureS5.webp"
+    },
+    {
+      "figure": "Figure S6",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image4.png",
+      "source_sha256": "09f6da659f18c75e501221ecba4a99fe3d2fc1b60bcc744d3a7e2f3d99e7083c",
+      "preview": "assets/figures/figureS6.webp"
+    },
+    {
+      "figure": "Figure S7",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image5.png",
+      "source_sha256": "caa8aecd5acaea78a2f4ec2d945004ae2005100201334a7eff6c7f620aa08887",
+      "preview": "assets/figures/figureS7.webp"
+    },
+    {
+      "figure": "Figure S8",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image6.png",
+      "source_sha256": "ceb0ee620ff31e9340e791b34df565f25b85e273322d9eebc32cca17710acfe4",
+      "preview": "assets/figures/figureS8.webp"
+    },
+    {
+      "figure": "Figure S9",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image8.png",
+      "source_sha256": "440e4f346b69a0d8d85a0e71168e7db8be276b615aaab2017704d4eb16e5fffd",
+      "preview": "assets/figures/figureS9.webp"
+    },
+    {
+      "figure": "Figure S10",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image7.png",
+      "source_sha256": "f19d78bb7fd2c337a15833daeb25e2b205676c3677a974aad54cfe016796076c",
+      "preview": "assets/figures/figureS10.webp"
+    },
+    {
+      "figure": "Figure S11",
+      "source": "../Supplemental_Material_MICTer.docx",
+      "embedded_part": "word/media/image9.png",
+      "source_sha256": "b20da98c7e2e957f02cd455f3b262e44d1435f717abcb2ed2fc91fffcec4b16b",
+      "preview": "assets/figures/figureS11.webp"
+    },
+    {
+      "display": "landscape",
+      "source_figure": 5,
+      "normalized_crop": [
+        0.255,
+        0.3,
+        0.503,
+        0.56
+      ],
+      "operation": "Panel crop only; labels and numerical content unchanged"
+    },
+    {
+      "display": "score",
+      "source_figure": 3,
+      "normalized_crop": [
+        0.68,
+        0.33,
+        0.995,
+        0.61
+      ],
+      "operation": "Panel crop only; labels and numerical content unchanged"
+    },
+    {
+      "display": "benchmark",
+      "source_figure": 3,
+      "normalized_crop": [
+        0.0,
+        0.33,
+        0.3,
+        0.6
+      ],
+      "operation": "Panel crop only; labels and numerical content unchanged"
+    },
+    {
+      "display": "genes",
+      "source_figure": 3,
+      "normalized_crop": [
+        0.22,
+        0.62,
+        0.64,
+        0.98
+      ],
+      "operation": "Panel crop only; labels and numerical content unchanged"
+    },
+    {
+      "display": "perturbation",
+      "source_figure": 3,
+      "normalized_crop": [
+        0.64,
+        0.61,
+        0.995,
+        0.995
+      ],
+      "operation": "Panel crop only; labels and numerical content unchanged"
+    },
+    {
+      "display": "reconstruction",
+      "source_figure": 3,
+      "normalized_crop": [
+        0.0,
+        0.0,
+        0.61,
+        0.32
+      ],
+      "operation": "Panel crop only; labels and numerical content unchanged"
+    }
+  ],
+  "displayed_figures": [
+    "Figure 2",
+    "Figure 3",
+    "Figure 4",
+    "Figure 5",
+    "Figure 6"
+  ],
+  "result_panel_crops": [
+    {
+      "asset": "assets/figures/result2.webp",
+      "source": "../MICTer图/exports_20261113/png/figure2.png",
+      "source_sha256": "8e9e966dbe8302e35819dfb9a45adf21a0e45b8a40f242d3d447d771e1e03c02",
+      "normalized_crop": [
+        0.32,
+        0.278,
+        0.647,
+        0.58
+      ],
+      "pixel_crop": [
+        1588,
+        1378,
+        3210,
+        2874
+      ],
+      "description": "Transition-score window"
+    },
+    {
+      "asset": "assets/figures/result3.webp",
+      "source": "../MICTer图/exports_20261113/png/figure3.png",
+      "source_sha256": "f6d8d96fa99dc585a56a949f28989b00d1b1704bf754f798115650512f1bfba2",
+      "normalized_crop": [
+        0.0,
+        0.324,
+        0.303,
+        0.602
+      ],
+      "pixel_crop": [
+        0,
+        1910,
+        1491,
+        3548
+      ],
+      "description": "Reconstruction accuracy"
+    },
+    {
+      "asset": "assets/figures/result4.webp",
+      "source": "../MICTer图/exports_20261113/png/figure4.png",
+      "source_sha256": "51e3ad314b30448a4ecc5d9a175f14ddecdf901af771f909f865cdae17c4cfd8",
+      "normalized_crop": [
+        0.651,
+        0.674,
+        0.999,
+        0.999
+      ],
+      "pixel_crop": [
+        3206,
+        3612,
+        4920,
+        5354
+      ],
+      "description": "EMT and MET perturbation responses"
+    },
+    {
+      "asset": "assets/figures/result5.webp",
+      "source": "../MICTer图/exports_20261113/png/figure5.png",
+      "source_sha256": "15c17cb46df529d3f2be7f4c7796864bc6319dcc212f76a78d5ac6da9ab06967",
+      "normalized_crop": [
+        0.5024,
+        0.295,
+        0.745,
+        0.556
+      ],
+      "pixel_crop": [
+        2480,
+        1561,
+        3677,
+        2941
+      ],
+      "description": "Predicted and observed cell-type proportions"
+    },
+    {
+      "asset": "assets/figures/result6.webp",
+      "source": "../MICTer图/exports_20261113/png/figure6.png",
+      "source_sha256": "6f6a1d0b8c6dce3f48ece7f0c2d69543f003e01d209bdf1cfe052c59bc6a91fd",
+      "normalized_crop": [
+        0.722,
+        0.267,
+        0.999,
+        0.54
+      ],
+      "pixel_crop": [
+        3546,
+        1530,
+        4906,
+        3094
+      ],
+      "description": "Candidate windows in cardiac differentiation"
+    },
+    {
+      "asset": "assets/figures/hero-landscape.webp",
+      "source": "../MICTer图/exports_20261113/png/figure2.png",
+      "source_sha256": "8e9e966dbe8302e35819dfb9a45adf21a0e45b8a40f242d3d447d771e1e03c02",
+      "normalized_crop": [
+        0.0,
+        0.278,
+        0.322,
+        0.578
+      ],
+      "pixel_crop": [
+        0,
+        1378,
+        1597,
+        2865
+      ],
+      "description": "Potential landscape during definitive endoderm differentiation"
+    }
+  ],
+  "selected_result_cards": [
+    {
+      "figure": 2,
+      "panel": "2f",
+      "kicker": "Endoderm",
+      "image": "result2.webp",
+      "title": "Endoderm transition window",
+      "summary": "A candidate window at 24.6–28.2 h accompanies definitive endoderm commitment."
+    },
+    {
+      "figure": 3,
+      "panel": "3b",
+      "kicker": "Targeted iPSC",
+      "image": "selected-ipsc-velocity.webp",
+      "title": "Reconstructed velocity fields",
+      "summary": "Projected drift follows progression towards mesodermal and endodermal branches."
+    },
+    {
+      "figure": 4,
+      "panel": "4i",
+      "kicker": "EMT and MET",
+      "image": "result4.webp",
+      "title": "Predicted fate responses",
+      "summary": "EMT- and MET-promoting modules shift predicted fate proportions in opposite directions."
+    },
+    {
+      "figure": 5,
+      "panel": "5f",
+      "kicker": "Pancreatic endocrine",
+      "image": "result5.webp",
+      "title": "Endocrine composition",
+      "summary": "Predicted cell-type proportions track the observed endocrine progression."
+    },
+    {
+      "figure": 6,
+      "panel": "6h",
+      "kicker": "Cardiac differentiation",
+      "image": "selected-cardiac-expression.webp",
+      "title": "Cardiac gene programmes",
+      "summary": "Expression profiles distinguish pluripotent, intermediate, fibroblast and cardiomyocyte states."
+    },
+    {
+      "figure": 5,
+      "panel": "5k",
+      "kicker": "Pancreatic endocrine",
+      "image": "selected-endocrine-communication.webp",
+      "title": "Cell–cell communication",
+      "summary": "Inferred communication connects endocrine populations at day 4."
+    }
+  ],
+  "selected_result_crops": [
+    {
+      "asset": "assets/figures/selected-ipsc-velocity.webp",
+      "source": "../MICTer图/exports_20261113/png/figure3.png",
+      "source_sha256": "f6d8d96fa99dc585a56a949f28989b00d1b1704bf754f798115650512f1bfba2",
+      "normalized_crop": [
+        0.636,
+        0.0,
+        0.999,
+        0.328
+      ],
+      "pixel_crop": [
+        3130,
+        0,
+        4916,
+        1933
+      ],
+      "description": "Figure 3b projected velocity fields",
+      "excluded_neighbour_fragment_px": null
+    },
+    {
+      "asset": "assets/figures/selected-cardiac-expression.webp",
+      "source": "../MICTer图/exports_20261113/png/figure6.png",
+      "source_sha256": "6f6a1d0b8c6dce3f48ece7f0c2d69543f003e01d209bdf1cfe052c59bc6a91fd",
+      "normalized_crop": [
+        0.282,
+        0.602,
+        0.741,
+        0.999
+      ],
+      "pixel_crop": [
+        1385,
+        3449,
+        3639,
+        5724
+      ],
+      "description": "Figure 6h lineage marker expression",
+      "excluded_neighbour_fragment_px": [
+        0,
+        2029,
+        54,
+        2275
+      ]
+    },
+    {
+      "asset": "assets/figures/selected-endocrine-communication.webp",
+      "source": "../MICTer图/exports_20261113/png/figure5.png",
+      "source_sha256": "15c17cb46df529d3f2be7f4c7796864bc6319dcc212f76a78d5ac6da9ab06967",
+      "normalized_crop": [
+        0.837,
+        0.8,
+        0.999,
+        0.999
+      ],
+      "pixel_crop": [
+        4131,
+        4232,
+        4931,
+        5285
+      ],
+      "description": "Figure 5k day-4 communication network",
+      "excluded_neighbour_fragment_px": null
+    }
+  ]
+}

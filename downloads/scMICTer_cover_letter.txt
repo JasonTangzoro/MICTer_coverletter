@@ -1,0 +1,22 @@
+Dear Editor,
+
+We submit our manuscript, “MICTer localizes candidate critical transition windows through manifold-informed landscape dynamics”, for consideration as a research article.
+
+Sparse single-cell time courses reveal changing populations while leaving the timing of transitions between sampled states unresolved. Our study connects continuous population reconstruction to a focused question: when does the fitted landscape reorganize, and which molecular changes and predicted fate responses accompany those intervals?
+
+MICTer combines manifold-aware latent cell-state encoding, potential-driven dynamics and temporal landscape analysis. The shared representation links observed expression to reconstructed states and molecular readouts through a decoder. Transport matching fits population evolution, while a conditional Hamilton–Jacobi–Bellman residual regularizes the potential. Temporal potential change at fixed states and dynamical activity define a score for localizing candidate transition windows.
+
+We evaluate this framework across five time series: definitive endoderm differentiation, targeted iPSC differentiation, EMT/MET, pancreatic endocrine differentiation and human iPSC cardiac differentiation. The analyses reconstruct changing populations and branch-associated landscapes, then connect selected windows to gene expression, potential sensitivity and predicted perturbation responses. In pancreatic differentiation, the primary window spans days 2.78–3.03 and accompanies β-cell and enterochromaffin-like fate tendencies. In cardiac differentiation, days 2.62–3.20 precede the emergence of cardiomyocyte and cardiac fibroblast programmes.
+
+Perturbation comparisons show how gene identity and intervention timing shape predicted lineage composition. Pancreatic responses were generally stronger for day-3 than day-1 initiation, while cardiac responses to selected genes were attenuated at day 5 relative to day 3. The targeted iPSC and EMT/MET analyses provide additional comparisons of stage-dependent responses. These results identify gene–stage combinations for experimental investigation.
+
+The study provides a common route from cell-state geometry to transition timing and molecular hypotheses across differentiation systems. We believe it will interest researchers in computational systems biology, developmental dynamics and single-cell analysis.
+
+Thank you for considering our manuscript.
+
+Sincerely,
+Hongye Wang, on behalf of the authors
+
+Corresponding authors:
+Jiayuan Zhong — Zjiayuan@fosu.edu.cn
+Rui Liu — scliurui@scut.edu.cn
