@@ -4,7 +4,7 @@ A self-contained, dependency-free cover letter website for the MICTer manuscript
 
 Open `index.html` directly or serve this folder with `python3 -m http.server 8765 --bind 127.0.0.1`.
 
-The site covers definitive endoderm differentiation, targeted iPSC differentiation, EMT/MET, pancreatic endocrine differentiation and human iPSC cardiac differentiation. The interactive panel replays the existing targeted iPSC population and score data.
+The site covers definitive endoderm differentiation, targeted iPSC differentiation, EMT/MET, pancreatic endocrine differentiation and human iPSC cardiac differentiation. The interactive panel switches between three cached examples: the existing targeted iPSC population and score data, GSE75748 definitive endoderm (0–96 h, frames every 6 h) and EMT/MET (day 7–30, frames every day). The two added datasets were produced by forward rollouts of the already trained models; no retraining, new experiments or manuscript edits were performed. Their sources are `piuot_run_gaga` (epoch 2000) and `piuot_run_unified` (best checkpoint), with the cached data stored in `data-endoderm.js` and `data-emt-met.js`.
 
 The figure browser displays main Figures 2–6, exported from the saved Illustrator files in `../MICTer图`. Captions match the current manuscript. Supplementary figures are not shown. The results section contains six selected panel crops across five time series, arranged in two rows of three on desktop. Each card links to its full main figure.
 
