@@ -9,6 +9,8 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <script src="data.js" defer></script>
+  <script src="data-endoderm.js" defer></script>
+  <script src="data-emt-met.js" defer></script>
   <script src="figure-config.js" defer></script>
   <script src="script.js" defer></script>
 </head>
@@ -36,16 +38,17 @@
 
     <section class="section-band interactive-band" id="interactive" aria-labelledby="interactive-title">
       <div class="section-inner">
-        <div class="section-heading"><p class="eyebrow">Interactive dynamics</p><h2 id="interactive-title">Follow the population.<br>Inspect the transition window.</h2><p>Explore the targeted iPSC example through cached population reconstructions and the transition-score curve.</p></div>
-        <div class="explorer">
-          <div class="explorer-header"><div><span class="eyebrow">iPSC · day 0–5</span><h3>Continuous reconstruction, sampled for display</h3></div><span class="data-badge">RT-qPCR · 96 genes</span></div>
+        <div class="section-heading"><p class="eyebrow">Interactive dynamics</p><h2 id="interactive-title">Follow the population.<br>Inspect the transition window.</h2><p>Explore each time series through cached population reconstructions and its transition curve.</p></div>
+        <div class="dataset-tabs" id="dataset-tabs" role="tablist" aria-label="Interactive dataset"></div>
+        <div class="explorer" id="explorer-panel" role="tabpanel">
+          <div class="explorer-header"><div><span class="eyebrow" id="dataset-kicker">iPSC · day 0–5</span><h3 id="explorer-title">Continuous reconstruction, sampled for display</h3></div><span class="data-badge" id="dataset-badge">RT-qPCR · 96 genes</span></div>
           <div class="explorer-plots">
-            <div class="plot-cell"><div class="plot-heading"><h4>Cell-state distribution</h4><span id="frame-day">Day 0.0</span></div><canvas id="population-plot" width="720" height="470" aria-label="Observed background and reconstructed cells on the fixed UMAP reference" role="img"></canvas><div class="plot-key"><span><i class="key-dot muted"></i>All observed cells</span><span><i class="key-dot purple"></i>Reconstructed population</span></div><p class="plot-note" id="frame-note">384 simulated particles · measured stage</p></div>
-            <div class="plot-cell"><div class="plot-heading"><h4>Transition score</h4><span id="score-value">C(t) = 1.00</span></div><svg id="score-plot" viewbox="0 0 640 420" role="img" aria-label="Transition score over days 0–5, with a maximum at day 2.325"></svg><div class="plot-key"><span><i class="key-line"></i>32-rollout mean</span><span><i class="key-box"></i>Primary window · days 1.95–2.4</span></div><p class="plot-note">The score and displayed populations are separate cached reconstructions.</p></div>
+            <div class="plot-cell"><div class="plot-heading"><h4>Cell-state distribution</h4><span id="frame-day">Day 0.0</span></div><canvas id="population-plot" width="720" height="470" aria-label="Observed background and reconstructed cells on the fixed UMAP reference" role="img"></canvas><div class="plot-key"><span><i class="key-dot muted"></i><span id="observed-legend">All observed cells</span></span><span><i class="key-dot purple"></i>Reconstructed population</span></div><p class="plot-note" id="frame-note">384 simulated particles · measured stage</p></div>
+            <div class="plot-cell"><div class="plot-heading"><h4 id="score-heading">Transition score</h4><span id="score-value">C(t) = 1.00</span></div><svg id="score-plot" viewbox="0 0 640 420" role="img" aria-label="Transition score over days 0–5, with a maximum at day 2.325"></svg><div class="plot-key"><span><i class="key-line"></i><span id="score-legend">32-rollout mean</span></span><span><i class="key-box"></i><span id="window-legend">Primary window · days 1.95–2.4</span></span></div><p class="plot-note" id="score-note">The score and displayed populations are separate cached reconstructions.</p></div>
           </div>
           <div class="playback"><button class="button play-button" id="play" type="button" aria-label="Play population reconstruction">▶ Play</button><label class="slider-label" for="time-slider">Population time</label><input id="time-slider" type="range" min="0" max="10" step="1" value="0" aria-label="Population time"><output id="time-output" for="time-slider">Day 0.0</output><button class="button secondary" id="peak" type="button">Inspect peak ↗</button></div>
           </div>
-        <p class="section-footnote">Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 0.5-day spacing; the score has 0.025-day spacing. The full time course contributed to model fitting.</p>
+        <p class="section-footnote" id="explorer-footnote">Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 0.5-day spacing; the score has 0.025-day spacing. The full time course contributed to model fitting.</p>
       </div>
     </section>
 
