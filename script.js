@@ -234,7 +234,7 @@
       windows: [[1.125, 1.675], [2.75, 3.275]],
       windowLabel: 'Candidate windows · days 1.125–1.675 & 2.750–3.275',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.5-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.1-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_PANCREATIC
     },
     {
@@ -261,7 +261,7 @@
       windows: [[1.475, 2.125], [2.6, 3.525]],
       windowLabel: 'Candidate windows · days 1.475–2.125 & 2.600–3.525',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.5-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.1-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_CARDIAC
     }
   ].filter((entry) => entry.data);
