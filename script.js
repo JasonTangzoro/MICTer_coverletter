@@ -202,14 +202,14 @@
       scoreTick: 0.5,
       scoreHeading: 'Transition indicator',
       scoreSymbol: 'I(t)',
-      scoreLegend: 'causal trailing window · day 7 = 1',
+      scoreLegend: '32-rollout mean · trailing window · day 7 = 1',
       scoreNote: 'The indicator and displayed populations are separate cached reconstructions.',
-      peakTime: 22.5,
-      peakLabel: 'Day 22.5',
-      window: [19.9, 22.5],
-      windowLabel: 'Critical window · days 19.9–22.5',
+      peakTime: 22.3,
+      peakLabel: 'Day 22.3',
+      window: [19.7, 22.3],
+      windowLabel: 'Critical window · days 19.7–22.3',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing; the indicator uses a trailing 2.5-day window and is normalized to the first displayed day (day 7 = 1) during calculation, so no future information enters I(t). The full time course contributed to model fitting.',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged, so no future information enters I(t). The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
     }
   ].filter((entry) => entry.data);
