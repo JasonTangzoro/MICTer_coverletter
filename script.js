@@ -132,7 +132,7 @@
   if (location.hash.startsWith('#figure')) requestAnimationFrame(readHash);
 
   // Plot only cached numerical values; no synthetic trajectories or fitted browser curves.
-  // One renderer serves three cached datasets; switching only swaps the data and labels.
+  // One renderer serves five cached datasets; switching only swaps the data and labels.
   const datasets = [
     {
       key: 'ipsc',
@@ -209,6 +209,60 @@
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing; the indicator is sampled every 0.05 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
+    },
+    {
+      key: 'pancreatic',
+      tab: 'Pancreatic endocrine',
+      kicker: 'GSE114412 · day 0–4',
+      badge: 'scRNA-seq · 7 states',
+      axisX: 'GAGA UMAP 1',
+      axisY: 'GAGA UMAP 2',
+      projection: 'GAGA UMAP',
+      timeUnit: 'day',
+      timeMin: 0,
+      timeMax: 4,
+      timeTicks: [0, 1, 2, 3, 4],
+      scoreMax: 1.2,
+      scoreTick: 0.2,
+      scoreHeading: 'Transition indicator',
+      scoreSymbol: 'I(t)',
+      scoreLegend: '32-rollout mean · t0 = Day 0.5',
+      scoreNote: 'I(Day 0.5) = 1 by construction, not a peak; the marked peak is a window maximum. Indicator and populations are separate cached reconstructions.',
+      peakTime: 1.5,
+      peakLabel: 'Day 1.500',
+      window: [1.125, 1.675],
+      windows: [[1.125, 1.675], [2.75, 3.275]],
+      windowLabel: 'Candidate windows · days 1.125–1.675 & 2.750–3.275',
+      observedLegend: 'All observed cells',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.5-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
+      data: window.SCIENCE_DATA_PANCREATIC
+    },
+    {
+      key: 'cardiac',
+      tab: 'Cardiac differentiation',
+      kicker: 'GSE175634 · day 0–7',
+      badge: 'scRNA-seq · 7 states',
+      axisX: 'GAGA UMAP 1',
+      axisY: 'GAGA UMAP 2',
+      projection: 'GAGA UMAP',
+      timeUnit: 'day',
+      timeMin: 0,
+      timeMax: 7,
+      timeTicks: [0, 1, 2, 3, 4, 5, 6, 7],
+      scoreMax: 1.2,
+      scoreTick: 0.2,
+      scoreHeading: 'Transition indicator',
+      scoreSymbol: 'I(t)',
+      scoreLegend: '32-rollout mean · t0 = Day 0.5',
+      scoreNote: 'I(Day 0.5) = 1 by construction, not a peak; the marked peak is a window maximum. Indicator and populations are separate cached reconstructions.',
+      peakTime: 3.2,
+      peakLabel: 'Day 3.200',
+      window: [2.6, 3.525],
+      windows: [[1.475, 2.125], [2.6, 3.525]],
+      windowLabel: 'Candidate windows · days 1.475–2.125 & 2.600–3.525',
+      observedLegend: 'All observed cells',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.5-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
+      data: window.SCIENCE_DATA_CARDIAC
     }
   ].filter((entry) => entry.data);
 
@@ -304,7 +358,10 @@
     scoreX = (value) => 55 + (value - meta.timeMin) / (meta.timeMax - meta.timeMin) * 555;
     scoreY = (value) => 365 - value / meta.scoreMax * 328;
     const path = data.curve.map((row, i) => `${i ? 'L' : 'M'}${scoreX(row[0]).toFixed(3)},${scoreY(row[1]).toFixed(3)}`).join(' ');
-    svg.append(svgElement('rect', {x: scoreX(meta.window[0]), y: 37, width: Math.max(scoreX(meta.window[1]) - scoreX(meta.window[0]), 1), height: 328, fill: '#f2eaf7'}));
+    // `windows` (optional) shades every code-detected window; legacy single `window` still works.
+    for (const [start, end] of (meta.windows || [meta.window])) {
+      svg.append(svgElement('rect', {x: scoreX(start), y: 37, width: Math.max(scoreX(end) - scoreX(start), 1), height: 328, fill: '#f2eaf7'}));
+    }
     for (let value = 0; value <= meta.scoreMax + 1e-9; value += meta.scoreTick) {
       svg.append(svgElement('line', {x1: 55, x2: 610, y1: scoreY(value), y2: scoreY(value), stroke: '#e8ecf3'}));
       svg.append(svgElement('text', {x: 42, y: scoreY(value) + 4, fill: '#778196', 'text-anchor': 'end', 'font-size': 12}, Number(value.toFixed(2))));
@@ -325,7 +382,7 @@
     cursor = svgElement('line', {x1: 55, x2: 55, y1: 37, y2: 365, stroke: '#7b8ba5', 'stroke-width': 1.2, 'stroke-dasharray': '4 5'});
     cursorDot = svgElement('circle', {cx: 55, cy: scoreY(1), r: 5, fill: '#fff', stroke: '#8750a3', 'stroke-width': 2.5});
     svg.append(cursor, cursorDot);
-    const peakDescription = Number.isFinite(meta.peakTime) ? `, with a maximum at ${meta.peakLabel}` : '';
+    const peakDescription = Number.isFinite(meta.peakTime) ? `, with a marked peak at ${meta.peakLabel}` : '';
     svg.setAttribute('aria-label', `${meta.scoreHeading} over ${meta.timeUnit === 'h' ? `0–${meta.timeMax} h` : `day ${meta.timeMin}–${meta.timeMax}`}${peakDescription}`);
     updateScore(0);
   }
