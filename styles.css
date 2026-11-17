@@ -503,15 +503,12 @@ a { color: var(--accent); text-underline-offset: .2em; }
 }
 
 .figure-header .button-row { flex-shrink: 0; }
-.figure-image-button { padding: 15px; border-block: 1px solid var(--line); background: #f6f8fd; }
+.figure-image-button { display: block; border-block: 1px solid var(--line); }
 .figure-image-button:focus-visible { outline-offset: -4px; }
 
 .figure-image-button img {
-  width: auto;
+  width: 100%;
   height: auto;
-  max-height: min(65vh, 630px);
-  object-fit: contain;
-  background: var(--paper);
 }
 
 .figure-legend { padding-top: 12px; }
@@ -663,7 +660,6 @@ dialog::backdrop { background: #12203bb3; }
 
   .explorer-plots { gap: 10px; padding-top: 10px; }
   .figure-header { flex-direction: column; }
-  .figure-image-button { padding: 8px; }
   .letter-section { grid-template-columns: minmax(0, 1fr); }
   .letter-intro { position: static; }
   .site-footer { flex-wrap: wrap; justify-content: space-between; }
