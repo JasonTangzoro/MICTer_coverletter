@@ -183,7 +183,8 @@
       window: [24.6, 28.2],
       windowLabel: 'Primary window · 24.6–28.2 h',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 6-hour spacing; the score has 0.6-hour spacing. The full time course contributed to model fitting.',
+      frameDelays: [33, 60],
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames are spaced about 0.32 hours apart (300 frames). The score is sampled every 0.6 hour. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_ENDODERM
     },
     {
@@ -209,7 +210,8 @@
       window: [19.7, 22.3],
       windowLabel: 'Critical window · days 19.7–22.3',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged, so no future information enters I(t). The full time course contributed to model fitting.',
+      frameDelays: [100, 140],
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames start at day 7.5 after a 0.5-day warm-up from the day-7 initial condition and are spaced 0.23 day apart. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged, so no future information enters I(t). The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
     }
   ].filter((entry) => entry.data);
@@ -411,10 +413,11 @@
     if (timer) { stop(); return; }
     if (frameIndex === current.data.frames.length - 1) updateFrame(0);
     $('#play').textContent = 'Ⅱ Pause'; $('#play').setAttribute('aria-label', 'Pause population reconstruction');
+    const frameDelay = current.frameDelays ? current.frameDelays[0] : 850;
     timer = window.setInterval(() => {
       if (frameIndex === current.data.frames.length - 1) { stop(); return; }
       updateFrame(frameIndex + 1);
-    }, motionPreference.matches ? 1600 : 850);
+    }, motionPreference.matches ? 1600 : frameDelay);
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
   new IntersectionObserver((entries) => { if (!entries[0].isIntersecting) stop(); }, {threshold: .1}).observe($('.explorer'));
