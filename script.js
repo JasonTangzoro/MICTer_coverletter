@@ -160,7 +160,7 @@
       scoreSymbol: 'C(t)',
       scoreLegend: '32-rollout mean',
       observedLegend: 'All observed cells',
-      frameDelays: [250, 400],
+      frameDelays: [300, 450],
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames are spaced about 1 hour apart (100 frames). The score is sampled every 0.6 hour. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_ENDODERM
     },
