@@ -189,15 +189,15 @@
     {
       key: 'emt',
       tab: 'EMT/MET',
-      title: 'EMT/MET · days 7.5–30',
+      title: 'EMT/MET · days 0–30',
       badge: 'Time course · 5 stages',
       axisX: 'PC 1',
       axisY: 'PC 2',
       projection: 'PC',
       timeUnit: 'day',
-      timeMin: 7.5,
+      timeMin: 0,
       timeMax: 30,
-      timeTicks: [10, 15, 20, 25, 30],
+      timeTicks: [0, 5, 10, 15, 20, 25, 30],
       scoreMax: 1.4,
       scoreTick: 0.5,
       scoreHeading: 'Transition indicator',
@@ -205,7 +205,7 @@
       scoreLegend: '32-rollout mean · trailing window · day 7 = 1',
       observedLegend: 'All observed cells',
       frameDelays: [100, 140],
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames start at day 7.5 after a 0.5-day warm-up and are spaced 0.23 day apart. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged. The full time course contributed to model fitting.',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames cover days 0–30 (100 frames, 0.30-day spacing). The indicator is defined from day 7; frames before day 7 are shown without an indicator value. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
     },
     {
