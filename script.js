@@ -3,6 +3,9 @@
   const $ = (selector) => document.querySelector(selector);
   const figures = window.FIGURES;
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const figureDialog = $('#image-dialog');
+  const figureViewport = $('#dialog-figure');
+  const zoomButton = $('#zoom-figure');
   let selectedFigure = figures[0];
   let frameIndex = 0;
   let timer = null;
@@ -24,10 +27,11 @@
       $('.menu-toggle').focus();
     }
   });
+  const sectionLinks = document.querySelectorAll('#navigation a, .header-action');
   const navigationObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      $('#navigation').querySelectorAll('a').forEach((link) => {
+      sectionLinks.forEach((link) => {
         const active = link.getAttribute('href') === `#${entry.target.id}`;
         link.classList.toggle('active', active);
         if (active) link.setAttribute('aria-current', 'location');
@@ -35,7 +39,7 @@
       });
     });
   }, {rootMargin: '-15% 0px -60% 0px'});
-  ['overview', 'model', 'evidence', 'interactive', 'figures'].forEach((id) => navigationObserver.observe(document.getElementById(id)));
+  sectionLinks.forEach((link) => navigationObserver.observe($(link.hash)));
 
   function paragraphNodes(text) {
     const fragment = document.createDocumentFragment();
@@ -98,24 +102,32 @@
     });
     $('#figure-tabs').append(button);
   });
+  function setFigureZoom(zoomed) {
+    figureViewport.classList.toggle('is-zoomed', zoomed);
+    zoomButton.textContent = zoomed ? 'Fit to width' : 'Zoom in';
+    figureViewport.scrollTo(0, 0);
+  }
+
   function openFigure(id) {
     if (id) selectFigure(id);
     $('#dialog-title').textContent = `${selectedFigure.label} · ${selectedFigure.title}`;
     $('#dialog-image').src = selectedFigure.image;
     $('#dialog-image').alt = `${selectedFigure.label}: ${selectedFigure.title}`;
-    if (!$('#image-dialog').open) $('#image-dialog').showModal();
+    if (!figureDialog.open) figureDialog.showModal();
+    setFigureZoom(false);
     document.body.style.overflow = 'hidden';
   }
   $('.figure-image-button').addEventListener('click', () => openFigure());
   $('#enlarge-figure').addEventListener('click', () => openFigure());
   document.querySelectorAll('.open-figure').forEach((button) => button.addEventListener('click', () => openFigure(button.dataset.figure)));
   document.querySelectorAll('[data-select-figure]').forEach((link) => link.addEventListener('click', () => selectFigure(link.dataset.selectFigure)));
-  $('#close-dialog').addEventListener('click', () => $('#image-dialog').close());
-  $('#image-dialog').addEventListener('close', () => { document.body.style.overflow = ''; });
-  $('#image-dialog').addEventListener('click', (event) => {
-    if (event.target !== $('#image-dialog')) return;
-    const bounds = $('#image-dialog').getBoundingClientRect();
-    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) $('#image-dialog').close();
+  zoomButton.addEventListener('click', () => setFigureZoom(!figureViewport.classList.contains('is-zoomed')));
+  $('#close-dialog').addEventListener('click', () => figureDialog.close());
+  figureDialog.addEventListener('close', () => { document.body.style.overflow = ''; });
+  figureDialog.addEventListener('click', (event) => {
+    if (event.target !== figureDialog) return;
+    const bounds = figureDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) figureDialog.close();
   });
   function readHash() {
     const id = location.hash.slice(1);
@@ -130,6 +142,27 @@
 
   // Use cached populations and scores on a shared display timeline.
   const datasets = [
+    {
+      key: 'endoderm',
+      tab: 'Endoderm',
+      title: 'Endoderm · GSE75748 · 0–96 h',
+      badge: 'Time course · 6 stages',
+      axisX: 'PC 1',
+      axisY: 'PC 2',
+      projection: 'PC',
+      timeUnit: 'h',
+      timeMin: 0,
+      timeMax: 96,
+      timeTicks: [0, 12, 24, 36, 48, 60, 72, 84, 96],
+      scoreMax: 3,
+      scoreTick: 1,
+      scoreHeading: 'Transition score',
+      scoreSymbol: 'C(t)',
+      scoreLegend: '32-rollout mean',
+      observedLegend: 'All observed cells',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. The population frames are spaced 6 hours apart. The score is sampled every 0.6 hour. The full time course contributed to model fitting.',
+      data: window.SCIENCE_DATA_ENDODERM
+    },
     {
       key: 'ipsc',
       tab: 'Targeted iPSC',
@@ -151,27 +184,6 @@
       observedLegend: 'All observed cells',
       footnote: 'The iPSC rollout shows 102 reconstructed population snapshots. The score is sampled every 0.025 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA
-    },
-    {
-      key: 'endoderm',
-      tab: 'Endoderm',
-      title: 'Endoderm · GSE75748 · 0–96 h',
-      badge: 'Time course · 6 stages',
-      axisX: 'PC 1',
-      axisY: 'PC 2',
-      projection: 'PC',
-      timeUnit: 'h',
-      timeMin: 0,
-      timeMax: 96,
-      timeTicks: [0, 12, 24, 36, 48, 60, 72, 84, 96],
-      scoreMax: 3,
-      scoreTick: 1,
-      scoreHeading: 'Transition score',
-      scoreSymbol: 'C(t)',
-      scoreLegend: '32-rollout mean',
-      observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 6-hour spacing; the score has 0.6-hour spacing. The full time course contributed to model fitting.',
-      data: window.SCIENCE_DATA_ENDODERM
     },
     {
       key: 'emt',
@@ -264,7 +276,7 @@
     return element;
   }
   function timeLabel(value) {
-    if (current.timeUnit === 'h') return `${value.toFixed(1)} h`;
+    if (current.timeUnit === 'h') return `${Number(value.toFixed(1))} h`;
     return `Day ${value.toFixed(3).replace(/(\.\d{2})0$/, '$1')}`;
   }
   function computeBounds() {
@@ -284,7 +296,7 @@
     const ctx = observedLayer.getContext('2d');
     ctx.scale(dpr, dpr);
     ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = '#dfe2e9';
+    ctx.fillStyle = '#d1dae7';
     for (const point of current.data.observed) {
       ctx.beginPath(); ctx.arc(plotX(point[0]), plotY(point[1]), 1.9, 0, Math.PI * 2); ctx.fill();
     }
@@ -296,9 +308,9 @@
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
     ctx.drawImage(observedLayer, 0, 0, width, height);
-    ctx.strokeStyle = '#d7dfeb'; ctx.lineWidth = 1;
+    ctx.strokeStyle = '#bdc8d9'; ctx.lineWidth = 1.25;
     ctx.beginPath(); ctx.moveTo(52, 25); ctx.lineTo(52, 365); ctx.lineTo(612, 365); ctx.stroke();
-    ctx.fillStyle = '#7a8497'; ctx.font = '13px Arial'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#506178'; ctx.font = '500 17px system-ui'; ctx.textAlign = 'center';
     ctx.fillText(current.axisX, 335, 407);
     ctx.save(); ctx.translate(18, 198); ctx.rotate(-Math.PI / 2); ctx.fillText(current.axisY, 0, 0); ctx.restore();
     const frame = current.data.frames[frameIndex];
@@ -310,12 +322,10 @@
     }
     ctx.globalAlpha = 1;
     const label = timeLabel(frame.time);
-    $('#frame-day').textContent = label;
-    $('#frame-day').style.color = color;
     const measured = current.data.measurementTimes.includes(frame.time);
     $('#frame-note').textContent = `${frame.points.length} simulated particles · ${measured ? 'measured stage' : 'unmeasured intermediate stage'}`;
     canvas.setAttribute('aria-label', `${frame.points.length} reconstructed particles at ${label} on the fixed ${current.projection} reference, against ${current.data.observed.length} observed cells. ${measured ? 'Measurements exist at this stage.' : 'This intermediate stage was not sampled.'}`);
-    $('.plot-key .purple').style.background = color;
+    $('.reconstructed-key').style.background = color;
   }
   function renderScore() {
     const meta = current, data = meta.data;
@@ -330,17 +340,17 @@
     defs.append(clip);
     svg.append(defs);
     for (let value = 0; value <= meta.scoreMax + 1e-9; value += meta.scoreTick) {
-      svg.append(svgElement('line', {x1: 55, x2: 610, y1: scoreY(value), y2: scoreY(value), stroke: '#e8ecf3'}));
-      svg.append(svgElement('text', {x: 42, y: scoreY(value) + 4, fill: '#778196', 'text-anchor': 'end', 'font-size': 12}, Number(value.toFixed(2))));
+      svg.append(svgElement('line', {x1: 55, x2: 610, y1: scoreY(value), y2: scoreY(value), stroke: '#dde4ef'}));
+      svg.append(svgElement('text', {x: 42, y: scoreY(value) + 5, class: 'plot-tick', 'text-anchor': 'end'}, Number(value.toFixed(2))));
     }
     for (const tick of meta.timeTicks) {
-      svg.append(svgElement('text', {x: scoreX(tick), y: 386, fill: '#778196', 'text-anchor': 'middle', 'font-size': 12}, tick));
+      svg.append(svgElement('text', {x: scoreX(tick), y: 386, class: 'plot-tick', 'text-anchor': 'middle'}, tick));
     }
-    svg.append(svgElement('text', {x: 330, y: 412, fill: '#778196', 'text-anchor': 'middle', 'font-size': 13}, `Time (${meta.timeUnit})`));
-    svg.append(svgElement('text', {transform: 'translate(15,200) rotate(-90)', fill: '#778196', 'text-anchor': 'middle', 'font-size': 13}, meta.scoreHeading));
-    svg.append(svgElement('path', {d: path, 'clip-path': 'url(#score-time-clip)', fill: 'none', stroke: '#8850a4', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
-    cursor = svgElement('line', {x1: 55, x2: 55, y1: 37, y2: 365, stroke: '#7b8ba5', 'stroke-width': 1.2, 'stroke-dasharray': '4 5'});
-    cursorDot = svgElement('circle', {cx: 55, cy: scoreY(1), r: 5, fill: '#fff', stroke: '#8750a3', 'stroke-width': 2.5});
+    svg.append(svgElement('text', {x: 330, y: 411, class: 'plot-axis-label', 'text-anchor': 'middle'}, `Time (${meta.timeUnit})`));
+    svg.append(svgElement('text', {transform: 'translate(15,200) rotate(-90)', class: 'plot-axis-label', 'text-anchor': 'middle'}, meta.scoreHeading));
+    svg.append(svgElement('path', {d: path, 'clip-path': 'url(#score-time-clip)', class: 'score-stroke', fill: 'none', 'stroke-width': 3.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
+    cursor = svgElement('line', {x1: 55, x2: 55, y1: 37, y2: 365, stroke: '#7586a2', 'stroke-width': 1.5, 'stroke-dasharray': '4 5'});
+    cursorDot = svgElement('circle', {cx: 55, cy: scoreY(1), r: 5, class: 'score-stroke', fill: '#fff', 'stroke-width': 2.5});
     svg.append(cursor, cursorDot);
   }
   function updateScore(time) {
