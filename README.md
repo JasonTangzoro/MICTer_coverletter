@@ -13,7 +13,7 @@ Both panels use only frozen caches produced by the project's own main-figure pip
 | | Pancreatic endocrine (GSE114412) | Cardiac differentiation (GSE175634) |
 |---|---|---|
 | Reference canvas | fixed GAGA15 UMAP (`X_umap_15_0.1_1.0`), 13,368 observed cells | Stage7 60k GAGA16 UMAP, 8,000-point fixed-seed subsample shown |
-| Population frames | 41 frames at 0.1-day spacing (Day 0–4), 1,200 particles each; `recon2x9_step0p1_pred_points.csv` | 71 frames at 0.1-day spacing (Day 0–7), 1,200 particles each; `recon6row_gaga16_step0p1_umapstage7.csv` |
+| Population frames | 41 frames at 0.1-day spacing (Day 0–4), with 1,196 particles per frame on days 2.0–2.9 and 1,200 elsewhere; `recon2x9_step0p1_pred_points.csv` | 71 frames at 0.1-day spacing (Day 0–7), 1,200 particles each; `recon6row_gaga16_step0p1_umapstage7.csv` |
 | Indicator | `I(t) = mean_r [S_r(t)/S_r(0.5)]`, `S_r = 0.05·Action_r + 0.95·Q_phi_r`, 32 rollouts, 141 samples at 0.025-day spacing | same definition, epoch-1000 run, 32 rollouts, 261 samples at 0.025-day spacing |
 | Windows / peaks | days 1.125–1.675 and 2.750–3.275; window peaks Day 1.500 (I = 1.122), Day 3.025 (I = 0.594) | days 1.475–2.125 and 2.600–3.525; window peaks Day 1.800 (I = 0.463), Day 3.200 (I = 0.634) |
 
