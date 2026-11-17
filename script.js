@@ -191,9 +191,9 @@
       tab: 'EMT/MET',
       title: 'EMT/MET · days 0–30',
       badge: 'Time course · 5 stages',
-      axisX: 'PC 1',
-      axisY: 'PC 2',
-      projection: 'PC',
+      axisX: 'UMAP 1',
+      axisY: 'UMAP 2',
+      projection: 'UMAP',
       timeUnit: 'day',
       timeMin: 0,
       timeMax: 30,
@@ -205,7 +205,7 @@
       scoreLegend: '32-rollout mean · trailing window · day 7 = 1',
       observedLegend: 'All observed cells',
       frameDelays: [100, 140],
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames cover days 0–30 (100 frames, 0.30-day spacing). The indicator is defined from day 7; frames before day 7 are shown without an indicator value. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged. The full time course contributed to model fitting.',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. The projection is a UMAP fitted jointly on observed cells and reconstructed frames. Frames cover days 0–30 (100 frames, 0.30-day spacing). The indicator is defined from day 7; frames before day 7 are shown without an indicator value. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
     },
     {
