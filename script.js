@@ -203,7 +203,8 @@
       scoreSymbol: 'I(t)',
       scoreLegend: 'plateau-normalized indicator',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing; the indicator is sampled every 0.05 day. The full time course contributed to model fitting.',
+      frameDelays: [100, 160],
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames are spaced 0.23 days apart (100 frames); the indicator is sampled every 0.05 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
     },
     {
