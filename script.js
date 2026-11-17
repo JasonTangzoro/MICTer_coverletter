@@ -56,8 +56,7 @@
     const figure = figures.find((f) => f.id === id);
     if (!figure) return;
     selectedFigure = figure;
-    $('#figure-kicker').textContent = figure.label;
-    $('#figure-title').textContent = figure.title;
+    $('#figure-title').textContent = `${figure.label} · ${figure.title}`;
     $('#figure-image').src = figure.image;
     $('#figure-image').alt = `${figure.label}: ${figure.title}`;
     $('#figure-pdf').href = figure.pdf;
@@ -134,7 +133,7 @@
     {
       key: 'ipsc',
       tab: 'Targeted iPSC',
-      kicker: 'iPSC · day 0–5',
+      title: 'Targeted iPSC · days 0–5',
       badge: 'RT-qPCR · 96 genes',
       axisX: 'UMAP 1',
       axisY: 'UMAP 2',
@@ -149,7 +148,6 @@
       scoreHeading: 'Transition score',
       scoreSymbol: 'C(t)',
       scoreLegend: '32-rollout mean',
-      scoreNote: 'The score and displayed populations are separate cached reconstructions.',
       observedLegend: 'All observed cells',
       footnote: 'The iPSC rollout shows 102 reconstructed population snapshots. The score is sampled every 0.025 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA
@@ -157,7 +155,7 @@
     {
       key: 'endoderm',
       tab: 'Endoderm',
-      kicker: 'GSE75748 · 0–96 h',
+      title: 'Endoderm · GSE75748 · 0–96 h',
       badge: 'Time course · 6 stages',
       axisX: 'PC 1',
       axisY: 'PC 2',
@@ -171,7 +169,6 @@
       scoreHeading: 'Transition score',
       scoreSymbol: 'C(t)',
       scoreLegend: '32-rollout mean',
-      scoreNote: 'The score and displayed populations are separate cached reconstructions.',
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 6-hour spacing; the score has 0.6-hour spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_ENDODERM
@@ -179,7 +176,7 @@
     {
       key: 'emt',
       tab: 'EMT/MET',
-      kicker: 'EMT/MET · day 7–30',
+      title: 'EMT/MET · days 7–30',
       badge: 'Time course · 5 stages',
       axisX: 'PC 1',
       axisY: 'PC 2',
@@ -193,7 +190,6 @@
       scoreHeading: 'Transition indicator',
       scoreSymbol: 'I(t)',
       scoreLegend: 'plateau-normalized indicator',
-      scoreNote: 'The indicator and displayed populations are separate cached reconstructions.',
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing; the indicator is sampled every 0.05 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
@@ -201,7 +197,7 @@
     {
       key: 'pancreatic',
       tab: 'Pancreatic endocrine',
-      kicker: 'GSE114412 · day 0–4',
+      title: 'Pancreatic endocrine · GSE114412 · days 0–4',
       badge: 'scRNA-seq · 7 states',
       axisX: 'GAGA UMAP 1',
       axisY: 'GAGA UMAP 2',
@@ -215,7 +211,6 @@
       scoreHeading: 'Transition indicator',
       scoreSymbol: 'I(t)',
       scoreLegend: '32-rollout mean · t0 = Day 0.5',
-      scoreNote: 'The indicator is normalized at day 0.5. The indicator and displayed populations are separate cached reconstructions.',
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.1-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_PANCREATIC
@@ -223,7 +218,7 @@
     {
       key: 'cardiac',
       tab: 'Cardiac differentiation',
-      kicker: 'GSE175634 · day 0–7',
+      title: 'Cardiac differentiation · GSE175634 · days 0–7',
       badge: 'scRNA-seq · 7 states',
       axisX: 'GAGA UMAP 1',
       axisY: 'GAGA UMAP 2',
@@ -237,7 +232,6 @@
       scoreHeading: 'Transition indicator',
       scoreSymbol: 'I(t)',
       scoreLegend: '32-rollout mean · t0 = Day 0.5',
-      scoreNote: 'The indicator is normalized at day 0.5. The indicator and displayed populations are separate cached reconstructions.',
       observedLegend: 'Observed cells · 8,000 shown',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.1-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_CARDIAC
@@ -392,12 +386,11 @@
     const next = datasets.find((entry) => entry.key === key) || datasets[0];
     stop();
     current = next;
-    $('#dataset-kicker').textContent = next.kicker;
+    $('#explorer-title').textContent = next.title;
     $('#dataset-badge').textContent = next.badge;
     $('#observed-legend').textContent = next.observedLegend;
     $('#score-heading').textContent = next.scoreHeading;
     $('#score-legend').textContent = next.scoreLegend;
-    $('#score-note').textContent = next.scoreNote;
     $('#explorer-footnote').textContent = next.footnote;
     $('#dataset-tabs').querySelectorAll('button').forEach((button) => {
       const active = button.dataset.dataset === next.key;
