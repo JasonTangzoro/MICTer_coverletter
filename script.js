@@ -205,7 +205,7 @@
       scoreLegend: '32-rollout mean · trailing window · day 7 = 1',
       observedLegend: 'All observed cells',
       frameDelays: [100, 140],
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. The projection is a UMAP fitted jointly on observed cells and reconstructed frames. Frames cover days 0–30 (100 frames, 0.30-day spacing). The indicator is defined from day 7; frames before day 7 are shown without an indicator value. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged. The full time course contributed to model fitting.',
+      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. The projection is the continuous-dynamics UMAP fitted on observed cells and reconstructed trajectories (n_neighbors = 50). Frames are interpolated along 96 reconstructed trajectories and displayed as 384 particles over days 0–30. The indicator is defined from day 7; frames before day 7 are shown without an indicator value. The indicator uses a trailing 2.5-day window; each of the 32 rollouts is normalized to its own day-7 value and the curves are then averaged. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
     },
     {
