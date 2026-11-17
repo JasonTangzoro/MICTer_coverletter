@@ -1,12 +1,10 @@
 'use strict';
 (() => {
   const $ = (selector) => document.querySelector(selector);
-  const data = window.SCIENCE_DATA;
   const figures = window.FIGURES;
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let selectedFigure = figures[0];
   let frameIndex = 0;
-  let scoreIndex = 0;
   let timer = null;
 
   // Native links and a small mobile menu keep every section available without a router.
@@ -131,8 +129,7 @@
   window.addEventListener('hashchange', readHash);
   if (location.hash.startsWith('#figure')) requestAnimationFrame(readHash);
 
-  // Plot only cached numerical values; no synthetic trajectories or fitted browser curves.
-  // One renderer serves five cached datasets; switching only swaps the data and labels.
+  // Use cached populations and scores on a shared display timeline.
   const datasets = [
     {
       key: 'ipsc',
@@ -145,6 +142,7 @@
       timeUnit: 'day',
       timeMin: 0,
       timeMax: 5,
+      frameDelays: [100, 160],
       timeTicks: [0, 1, 2, 3, 4, 5],
       scoreMax: 9,
       scoreTick: 2,
@@ -152,12 +150,8 @@
       scoreSymbol: 'C(t)',
       scoreLegend: '32-rollout mean',
       scoreNote: 'The score and displayed populations are separate cached reconstructions.',
-      peakTime: 2.325,
-      peakLabel: 'Day 2.325',
-      window: [1.95, 2.4],
-      windowLabel: 'Primary window · days 1.95–2.4',
       observedLegend: 'All observed cells',
-      footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 0.5-day spacing; the score has 0.025-day spacing. The full time course contributed to model fitting.',
+      footnote: 'The iPSC rollout shows 102 reconstructed population snapshots. The score is sampled every 0.025 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA
     },
     {
@@ -178,10 +172,6 @@
       scoreSymbol: 'C(t)',
       scoreLegend: '32-rollout mean',
       scoreNote: 'The score and displayed populations are separate cached reconstructions.',
-      peakTime: 28.2,
-      peakLabel: '28.2 h',
-      window: [24.6, 28.2],
-      windowLabel: 'Primary window · 24.6–28.2 h',
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 6-hour spacing; the score has 0.6-hour spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_ENDODERM
@@ -204,8 +194,6 @@
       scoreSymbol: 'I(t)',
       scoreLegend: 'plateau-normalized indicator',
       scoreNote: 'The indicator and displayed populations are separate cached reconstructions.',
-      window: [19, 21.6],
-      windowLabel: 'Candidate transition window · days 19.0–21.6',
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Intermediate frames have 1-day spacing; the indicator is sampled every 0.05 day. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_EMT_MET
@@ -227,12 +215,7 @@
       scoreHeading: 'Transition indicator',
       scoreSymbol: 'I(t)',
       scoreLegend: '32-rollout mean · t0 = Day 0.5',
-      scoreNote: 'I(Day 0.5) = 1 by construction, not a peak; the marked peak is a window maximum. Indicator and populations are separate cached reconstructions.',
-      peakTime: 1.5,
-      peakLabel: 'Day 1.500',
-      window: [1.125, 1.675],
-      windows: [[1.125, 1.675], [2.75, 3.275]],
-      windowLabel: 'Candidate windows · days 1.125–1.675 & 2.750–3.275',
+      scoreNote: 'The indicator is normalized at day 0.5. The indicator and displayed populations are separate cached reconstructions.',
       observedLegend: 'All observed cells',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.1-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_PANCREATIC
@@ -254,12 +237,7 @@
       scoreHeading: 'Transition indicator',
       scoreSymbol: 'I(t)',
       scoreLegend: '32-rollout mean · t0 = Day 0.5',
-      scoreNote: 'I(Day 0.5) = 1 by construction, not a peak; the marked peak is a window maximum. Indicator and populations are separate cached reconstructions.',
-      peakTime: 3.2,
-      peakLabel: 'Day 3.200',
-      window: [2.6, 3.525],
-      windows: [[1.475, 2.125], [2.6, 3.525]],
-      windowLabel: 'Candidate windows · days 1.475–2.125 & 2.600–3.525',
+      scoreNote: 'The indicator is normalized at day 0.5. The indicator and displayed populations are separate cached reconstructions.',
       observedLegend: 'Observed cells · 8,000 shown',
       footnote: 'Displayed populations are reconstructed snapshots, not tracked descendants. Frames have 0.1-day spacing; the indicator has 0.025-day spacing. The full time course contributed to model fitting.',
       data: window.SCIENCE_DATA_CARDIAC
@@ -268,9 +246,8 @@
 
   const palette = ['#834e99', '#795ba6', '#705ead', '#566fab', '#358697', '#339c8a', '#58b66f', '#76c653', '#9ccf35', '#c4d833', '#e4df24'];
   const paletteRgb = palette.map((hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)));
-  function frameColor(index, count) {
-    if (count <= 1) return palette[0];
-    const position = index / (count - 1) * (paletteRgb.length - 1);
+  function frameColor(progress) {
+    const position = progress * (paletteRgb.length - 1);
     const low = Math.floor(position);
     const high = Math.min(low + 1, paletteRgb.length - 1);
     const mix = position - low;
@@ -284,7 +261,7 @@
   const observedLayer = document.createElement('canvas');
   let current = datasets[0];
   let xmin = 0, xmax = 1, ymin = 0, ymax = 1;
-  let scoreX = () => 0, scoreY = () => 0, cursor, cursorDot;
+  let scoreX, scoreY, scoreReveal, cursor, cursorDot;
 
   function svgElement(tag, attributes, text) {
     const element = document.createElementNS(ns, tag);
@@ -292,15 +269,9 @@
     if (text !== undefined) element.textContent = text;
     return element;
   }
-  function frameTimeLabel(value) {
-    return current.timeUnit === 'h' ? `${value.toFixed(0)} h` : `Day ${value.toFixed(1)}`;
-  }
-  function scoreTimeLabel(value) {
+  function timeLabel(value) {
     if (current.timeUnit === 'h') return `${value.toFixed(1)} h`;
-    return `Day ${value.toFixed(current.key === 'emt' ? 2 : 3)}`;
-  }
-  function nearestCurveIndex(value) {
-    return current.data.curve.reduce((best, row, i) => Math.abs(row[0] - value) < Math.abs(current.data.curve[best][0] - value) ? i : best, 0);
+    return `Day ${value.toFixed(3).replace(/(\.\d{2})0$/, '$1')}`;
   }
   function computeBounds() {
     const points = current.data.observed.concat(current.data.frames.flatMap((frame) => frame.points));
@@ -337,14 +308,14 @@
     ctx.fillText(current.axisX, 335, 407);
     ctx.save(); ctx.translate(18, 198); ctx.rotate(-Math.PI / 2); ctx.fillText(current.axisY, 0, 0); ctx.restore();
     const frame = current.data.frames[frameIndex];
-    const color = frameColor(frameIndex, current.data.frames.length);
+    const color = frameColor((frame.time - current.timeMin) / (current.timeMax - current.timeMin));
     ctx.globalAlpha = .8;
     ctx.fillStyle = color;
     for (const point of frame.points) {
       ctx.beginPath(); ctx.arc(plotX(point[0]), plotY(point[1]), 2.65, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
-    const label = frameTimeLabel(frame.time);
+    const label = timeLabel(frame.time);
     $('#frame-day').textContent = label;
     $('#frame-day').style.color = color;
     const measured = current.data.measurementTimes.includes(frame.time);
@@ -358,10 +329,12 @@
     scoreX = (value) => 55 + (value - meta.timeMin) / (meta.timeMax - meta.timeMin) * 555;
     scoreY = (value) => 365 - value / meta.scoreMax * 328;
     const path = data.curve.map((row, i) => `${i ? 'L' : 'M'}${scoreX(row[0]).toFixed(3)},${scoreY(row[1]).toFixed(3)}`).join(' ');
-    // `windows` (optional) shades every code-detected window; legacy single `window` still works.
-    for (const [start, end] of (meta.windows || [meta.window])) {
-      svg.append(svgElement('rect', {x: scoreX(start), y: 37, width: Math.max(scoreX(end) - scoreX(start), 1), height: 328, fill: '#f2eaf7'}));
-    }
+    const defs = svgElement('defs', {});
+    const clip = svgElement('clipPath', {id: 'score-time-clip'});
+    scoreReveal = svgElement('rect', {x: 55, y: 0, width: 0, height: 420});
+    clip.append(scoreReveal);
+    defs.append(clip);
+    svg.append(defs);
     for (let value = 0; value <= meta.scoreMax + 1e-9; value += meta.scoreTick) {
       svg.append(svgElement('line', {x1: 55, x2: 610, y1: scoreY(value), y2: scoreY(value), stroke: '#e8ecf3'}));
       svg.append(svgElement('text', {x: 42, y: scoreY(value) + 4, fill: '#778196', 'text-anchor': 'end', 'font-size': 12}, Number(value.toFixed(2))));
@@ -371,40 +344,45 @@
     }
     svg.append(svgElement('text', {x: 330, y: 412, fill: '#778196', 'text-anchor': 'middle', 'font-size': 13}, `Time (${meta.timeUnit})`));
     svg.append(svgElement('text', {transform: 'translate(15,200) rotate(-90)', fill: '#778196', 'text-anchor': 'middle', 'font-size': 13}, meta.scoreHeading));
-    svg.append(svgElement('path', {d: path, fill: 'none', stroke: '#8850a4', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
-    if (Number.isFinite(meta.peakTime)) {
-      const peak = data.curve[nearestCurveIndex(meta.peakTime)];
-      const anchor = scoreX(peak[0]) > 520 ? 'end' : 'start';
-      const offset = anchor === 'end' ? -15 : 15;
-      svg.append(svgElement('circle', {cx: scoreX(peak[0]), cy: scoreY(peak[1]), r: 4.5, fill: '#8850a4'}));
-      svg.append(svgElement('text', {x: scoreX(peak[0]) + offset, y: scoreY(peak[1]) - 12, fill: '#83559c', 'font-size': 13, 'font-weight': 600, 'text-anchor': anchor}, meta.peakLabel));
-    }
+    svg.append(svgElement('path', {d: path, 'clip-path': 'url(#score-time-clip)', fill: 'none', stroke: '#8850a4', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'}));
     cursor = svgElement('line', {x1: 55, x2: 55, y1: 37, y2: 365, stroke: '#7b8ba5', 'stroke-width': 1.2, 'stroke-dasharray': '4 5'});
     cursorDot = svgElement('circle', {cx: 55, cy: scoreY(1), r: 5, fill: '#fff', stroke: '#8750a3', 'stroke-width': 2.5});
     svg.append(cursor, cursorDot);
-    const peakDescription = Number.isFinite(meta.peakTime) ? `, with a marked peak at ${meta.peakLabel}` : '';
-    svg.setAttribute('aria-label', `${meta.scoreHeading} over ${meta.timeUnit === 'h' ? `0–${meta.timeMax} h` : `day ${meta.timeMin}–${meta.timeMax}`}${peakDescription}`);
-    updateScore(0);
   }
-  function updateScore(index) {
-    scoreIndex = index;
-    const row = current.data.curve[index];
-    if (!row || !cursor) return;
-    cursor.setAttribute('x1', scoreX(row[0])); cursor.setAttribute('x2', scoreX(row[0]));
-    cursorDot.setAttribute('cx', scoreX(row[0])); cursorDot.setAttribute('cy', scoreY(row[1]));
-    $('#score-value').textContent = `${current.scoreSymbol} = ${row[1].toFixed(2)}`;
-    if ($('#score-slider')) $('#score-slider').value = index;
-    $('#score-slider')?.setAttribute('aria-valuetext', `${scoreTimeLabel(row[0])}, ${current.scoreHeading.toLowerCase()} ${row[1].toFixed(3)}`);
+  function updateScore(time) {
+    const x = scoreX(time);
+    scoreReveal.setAttribute('width', x - scoreX(current.timeMin));
+    cursor.setAttribute('x1', x);
+    cursor.setAttribute('x2', x);
+    const curve = current.data.curve;
+    const scoreAvailable = time >= curve[0][0] && time <= curve.at(-1)[0];
+    cursorDot.setAttribute('visibility', scoreAvailable ? 'visible' : 'hidden');
+    if (!scoreAvailable) {
+      $('#score-value').textContent = '—';
+      svg.setAttribute('aria-label', `${current.scoreHeading} unavailable at ${timeLabel(time)}`);
+      return;
+    }
+    const rightIndex = curve.findIndex(([t]) => t >= time);
+    const [rightTime, rightScore] = curve[rightIndex];
+    let score = rightScore;
+    if (time < rightTime) {
+      const [leftTime, leftScore] = curve[rightIndex - 1];
+      score = leftScore + (rightScore - leftScore) * (time - leftTime) / (rightTime - leftTime);
+    }
+    cursorDot.setAttribute('cx', x);
+    cursorDot.setAttribute('cy', scoreY(score));
+    $('#score-value').textContent = `${current.scoreSymbol} = ${score.toFixed(2)}`;
+    svg.setAttribute('aria-label', `${current.scoreHeading} through ${timeLabel(time)}, current value ${score.toFixed(2)}`);
   }
   function updateFrame(index) {
     frameIndex = Math.max(0, Math.min(index, current.data.frames.length - 1));
     const time = current.data.frames[frameIndex].time;
     $('#time-slider').value = frameIndex;
-    const label = frameTimeLabel(time);
+    const label = timeLabel(time);
     $('#time-output').textContent = label;
     $('#time-slider').setAttribute('aria-valuetext', label);
     drawPopulation();
-    updateScore(nearestCurveIndex(time));
+    updateScore(time);
   }
   function stop() {
     window.clearInterval(timer); timer = null;
@@ -414,16 +392,13 @@
     const next = datasets.find((entry) => entry.key === key) || datasets[0];
     stop();
     current = next;
-    frameIndex = 0;
     $('#dataset-kicker').textContent = next.kicker;
     $('#dataset-badge').textContent = next.badge;
     $('#observed-legend').textContent = next.observedLegend;
     $('#score-heading').textContent = next.scoreHeading;
     $('#score-legend').textContent = next.scoreLegend;
-    $('#window-legend').textContent = next.windowLabel;
     $('#score-note').textContent = next.scoreNote;
     $('#explorer-footnote').textContent = next.footnote;
-    $('#peak').hidden = !Number.isFinite(next.peakTime);
     $('#dataset-tabs').querySelectorAll('button').forEach((button) => {
       const active = button.dataset.dataset === next.key;
       button.setAttribute('aria-selected', String(active));
@@ -461,20 +436,15 @@
     $('#dataset-tabs').append(button);
   });
   $('#time-slider').addEventListener('input', (event) => { stop(); updateFrame(Number(event.target.value)); });
-  $('#score-slider')?.addEventListener('input', (event) => { stop(); updateScore(Number(event.target.value)); });
-  $('#peak').addEventListener('click', () => {
-    if (!Number.isFinite(current.peakTime)) return;
-    stop();
-    updateScore(nearestCurveIndex(current.peakTime));
-  });
   $('#play').addEventListener('click', () => {
     if (timer) { stop(); return; }
     if (frameIndex === current.data.frames.length - 1) updateFrame(0);
     $('#play').textContent = 'Ⅱ Pause'; $('#play').setAttribute('aria-label', 'Pause population reconstruction');
+    const [normalDelay, reducedDelay] = current.frameDelays || [850, 1600];
     timer = window.setInterval(() => {
-      if (frameIndex === current.data.frames.length - 1) { stop(); return; }
       updateFrame(frameIndex + 1);
-    }, motionPreference.matches ? 1600 : 850);
+      if (frameIndex === current.data.frames.length - 1) stop();
+    }, motionPreference.matches ? reducedDelay : normalDelay);
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
   new IntersectionObserver((entries) => { if (!entries[0].isIntersecting) stop(); }, {threshold: .1}).observe($('.explorer'));
